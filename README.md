@@ -63,7 +63,7 @@ server.port=8083
 mvn clean install
 
 # Run the application
-mvn spring-boot:run
+.\mvnw.cmd spring-boot:run
 ```
 
 The application will start on `http://localhost:8083`
