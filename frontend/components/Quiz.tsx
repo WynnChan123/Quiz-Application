@@ -12,6 +12,7 @@ const Quiz = ({ userName }: { userName: string }) => {
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [quizFinished, setQuizFinished] = useState(false);
   const [showReview, setShowReview] = useState(false);
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     // Init fields
@@ -26,8 +27,8 @@ const Quiz = ({ userName }: { userName: string }) => {
   useEffect(() => {
     // Fetch questions
     const fetchQuestions = async ()=> {
-      try {
-        const response = await fetch('http://localhost:8083/question/category/JAVA', {
+      try {`${API_BASE_URL}/question/category/JAVA`
+        const response = await fetch(`${API_BASE_URL}/question/category/JAVA`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
