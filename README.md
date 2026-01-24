@@ -1,6 +1,9 @@
 # Quiz Application
 
 A RESTful Quiz Application built with Spring Boot and PostgreSQL that allows users to create quizzes, retrieve questions, and submit answers for automatic grading.
+Project deployed at: [https://vercel.com](https://myjavaquiz.vercel.app/)
+Backend deployed at: https://render.com/
+Frontend deployed at: https://vercel.com
 
 ## 🚀 Features
 
