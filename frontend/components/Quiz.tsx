@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Question } from './question';
+import { ArrowRight } from 'lucide-react';
 
 const Quiz = ({ userName }: { userName: string }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -27,7 +28,7 @@ const Quiz = ({ userName }: { userName: string }) => {
   useEffect(() => {
     // Fetch questions
     const fetchQuestions = async ()=> {
-      try {`${API_BASE_URL}/question/category/JAVA`
+      try {
         const response = await fetch(`${API_BASE_URL}/question/category/JAVA`, {
           method: 'GET',
           headers: {
@@ -84,7 +85,7 @@ const Quiz = ({ userName }: { userName: string }) => {
     setSelectedAnswer(newUserAnswers[currentQuestionIndex - 1] || '');
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     const finalAnswers = [...userAnswers];
 
     if (selectedAnswer) {
@@ -109,6 +110,26 @@ const Quiz = ({ userName }: { userName: string }) => {
     setScore(finalScore);
     setQuizFinished(true);
     setShowReview(false);
+    console.log('Calling backend to submit score...');
+    // Send score to backend
+    try{
+      const response = await fetch(`${API_BASE_URL}/leaderboard/createUser`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: userName,
+          totalScore: finalScore
+        })
+      });
+      if(!response.ok){
+        throw new Error('Failed to submit score');
+      }
+      console.log('Score submitted successfully');
+    }catch(err){
+      console.error('Error submitting score:', err);
+    }
   };
 
   const reviewItems = questions.map((q, idx) => {
@@ -134,6 +155,15 @@ const Quiz = ({ userName }: { userName: string }) => {
     return (
       <div className="flex items-center justify-center min-h-screen px-4 py-6 font-sans bg-gray-300">
         <div className="max-w-2xl w-full bg-white rounded-2xl shadow-2xl p-6 md:p-8 lg:p-12">
+        <div className="flex flex-row justify-end items-end">
+          <a
+            href="/leaderboard"
+            className="px-4 py-2 bg-amber-400 text-white font-bold rounded-lg hover:bg-amber-500 transition-colors duration-200"
+          >
+            View Leaderboard
+            <ArrowRight className="inline-block ml-1 w-4 h-4" />
+          </a>
+        </div>
           <div className="text-center mb-4 md:mb-6">
             <div className="text-4xl md:text-5xl lg:text-6xl mb-3 md:mb-4">
               {passed ? '🎉' : '📚'}
