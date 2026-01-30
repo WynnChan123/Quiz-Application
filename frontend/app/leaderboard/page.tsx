@@ -12,6 +12,7 @@ const Leaderboard = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const totalValuesPerPage = 10;
   const [displayedUsers, setDisplayedUsers] = useState<User[]>([]);
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://quiz-application-jwas.onrender.com';
 
   useEffect(() => {
     const start = (currentPage - 1) * totalValuesPerPage;
@@ -24,7 +25,7 @@ const Leaderboard = () => {
       setLoading(true);
       setError('');
       try{
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/leaderboard/allUsers`, {
+        const response = await fetch(`${API_BASE_URL}/leaderboard/allUsers`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
